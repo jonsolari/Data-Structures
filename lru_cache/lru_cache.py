@@ -25,8 +25,9 @@ class LRUCache:
     def get(self, keyz):
         for key, value in self.legend:
             if key == keyz:
-                return value
-        
+                self.entries.move_to_head(value)
+                return self.value
+            
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -39,10 +40,11 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        if self.count < 10:
+        if self.count <= 10:
             self.entries.add_to_head(value)
             self.legend[key] = value
             self.count += 1
-            self.entries.remove_from_tail()
+            if self.count > 10:
+                self.entries.remove_from_tail()
         else: 
             pass
