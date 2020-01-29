@@ -10,26 +10,38 @@ class LRUCache:
     """
     def __init__(self, limit=10):
         self.limit = limit
-        self.count = 0
         self.entries = DoublyLinkedList()
         self.legend = {}
 
+    def get(self, keyz):
+        for key, value in self.legend.items():
+            if key == keyz:
+                self.entries.move_to_front(value)
+                return value.value
+            
+    def set(self, key, value):
+        if self.entries.length <= self.limit:
+            self.entries.add_to_head(value)
+            self.legend[key] = self.entries.head
+            if self.entries.length > self.limit:
+                self.entries.remove_from_tail()
+        else: 
+            pass
 
-    """
+
+
+
+
+    """ get
     Retrieves the value associated with the given key. Also
     needs to move the key-value pair to the end of the order
     such that the pair is considered most-recently used.
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
     """
-    def get(self, keyz):
-        for key, value in self.legend:
-            if key == keyz:
-                self.entries.move_to_head(value)
-                return self.value
-            
 
-    """
+
+    """set
     Adds the given key-value pair to the cache. The newly-
     added pair should be considered the most-recently used
     entry in the cache. If the cache is already at max capacity
@@ -39,12 +51,3 @@ class LRUCache:
     want to overwrite the old value associated with the key with
     the newly-specified value.
     """
-    def set(self, key, value):
-        if self.count <= 10:
-            self.entries.add_to_head(value)
-            self.legend[key] = value
-            self.count += 1
-            if self.count > 10:
-                self.entries.remove_from_tail()
-        else: 
-            pass
