@@ -17,16 +17,25 @@ class LRUCache:
         for key, value in self.legend.items():
             if key == keyz:
                 self.entries.move_to_front(value)
-                return value.value
+                if value.value != None:
+                    return value.value
+                else:
+                    return None
+            else:
+                self.entries.add_to_head(value)
+                
             
     def set(self, key, value):
-        if self.entries.length <= self.limit:
+        if self.entries.length < self.limit:
             self.entries.add_to_head(value)
             self.legend[key] = self.entries.head
-            if self.entries.length > self.limit:
-                self.entries.remove_from_tail()
-        else: 
+        elif self.entries.length == self.limit: 
+            self.entries.remove_from_tail()
+            self.entries.add_to_head(value)
+            self.legend[key] = self.entries.head
+        else:
             pass
+        
 
 
 
